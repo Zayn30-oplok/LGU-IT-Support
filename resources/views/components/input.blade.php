@@ -11,18 +11,26 @@
     'leftIcon' => null,
     'rightIcon' => null,
 
+    // Colors
     'backgroundColor' => '#0f172a',
-    'strokeColor' => '=> null',
+    'strokeColor' => null,
     'focusColor' => '#635BFF',
 
     'iconColor' => '#64748b',
     'iconFocusColor' => null,
 
+    // Input
     'type' => 'text',
+
+    // Validation
+    'error' => null,
 ])
 
 @php
     $iconFocusColor = $iconFocusColor ?? $focusColor;
+
+    // Default stroke color if none is provided
+    $strokeColor = $strokeColor ?? 'rgba(255, 255, 255, 0.12)';
 
     $inputClass = 'floating-input';
 
@@ -47,14 +55,23 @@
         ",
     ]) }}
 >
+
+    {{-- Input --}}
     <input
         type="{{ $type }}"
         placeholder="{{ $placeholder }}"
-        @if ($name) name="{{ $name }}" @endif
-        @if (! is_null($value)) value="{{ $value }}" @endif
-        @if ($autocomplete) autocomplete="{{ $autocomplete }}" @endif
+        @if ($name)
+            name="{{ $name }}"
+        @endif
+        @if (!is_null($value))
+            value="{{ $value }}"
+        @endif
+        @if ($autocomplete)
+            autocomplete="{{ $autocomplete }}"
+        @endif
     >
 
+    {{-- Floating Label --}}
     @if ($label)
         <label>
             {{ $label }}
@@ -74,4 +91,14 @@
             <i class="{{ $rightIcon }}"></i>
         </span>
     @endif
+
+    {{-- Validation Error --}}
+    <span class="input-error-message">
+        <i class="ti ti-alert-circle"></i>
+
+        <span class="error-text">
+            {{ $error }}
+        </span>
+    </span>
+
 </div>

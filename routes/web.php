@@ -1,67 +1,178 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\Admin\StaffController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('pages.landing_page');
-})->name('home');
+/*
+|--------------------------------------------------------------------------
+| Public Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/', [PageController::class, 'home'])
+    ->name('home');
+
 
 /*
 |--------------------------------------------------------------------------
-| Login (only reachable by clicking the login buttons)
+| Login
 |--------------------------------------------------------------------------
-|
-| The Referer header tells us how the user arrived:
-|   - Clicked a button on our site  -> Referer = one of our own URLs -> show login
-|   - Typed the URL directly        -> no Referer                    -> back to home
-|
 */
 
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login')->middleware('session.auth:guest');
+Route::get('/login', [AuthController::class, 'showLoginForm'])
+    ->name('login')
+    ->middleware('session.auth:guest');
+
+Route::post('/login', [AuthController::class, 'login'])
+    ->name('login.store')
+    ->middleware('session.auth:guest');
+
+
 /*
 |--------------------------------------------------------------------------
-| Protected Pages
+| Protected Routes
 |--------------------------------------------------------------------------
 |
-| Routes here can only be opened when logged in.
-| Typing their URL directly redirects back to /login.
+| Everything inside this group requires the user to be logged in.
 |
 */
 
-// Route::middleware('session.auth')->group(function () {
-//     // Add protected pages here, e.g. dashboard, tickets, etc.
-//     // Guests typing these URLs are redirected to /login automatically.
+Route::middleware('session.auth')->group(function () {
 
-//     Route::get('/dashboard', function () {
-//     })->name('dashboard');
-// });
+    /*
+    |--------------------------------------------------------------------------
+    | Client Routes (staff / barangay)
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/dashboard', [PageController::class, 'dashboard'])
+        ->middleware('not.admin')
+        ->name('dashboard');
+
+    Route::prefix('tickets')
+        ->name('tickets.')
+        ->middleware('not.admin')
+        ->group(function () {
+
+            Route::get('/', [PageController::class, 'tickets'])
+                ->name('index');
+
+        });
+
+    Route::get('/knowledge', [PageController::class, 'knowledge'])
+        ->middleware('not.admin')
+        ->name('knowledge');
+
+    Route::get('/notifications', [PageController::class, 'notifications'])
+        ->middleware('not.admin')
+        ->name('notifications');
+
+    Route::get('/profile', [PageController::class, 'profile'])
+        ->middleware('not.admin')
+        ->name('profile');
+
+    Route::get('/settings', [PageController::class, 'settings'])
+        ->middleware('not.admin')
+        ->name('settings');
+
+    Route::get('/history', [PageController::class, 'history'])
+        ->middleware('not.admin')
+        ->name('history');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Routes
+    |--------------------------------------------------------------------------
+    |
+    | Everything admin-related lives under /admin.
+    |
+    */
+
+    Route::prefix('admin')
+        ->name('admin.')
+        ->middleware('admin')
+        ->group(function () {
+
+            Route::get('/dashboard', [PageController::class, 'adminDashboard'])
+                ->name('dashboard');
+
+            Route::prefix('tickets')
+                ->name('tickets.')
+                ->group(function () {
+
+                    Route::get('/', [PageController::class, 'adminTickets'])
+                        ->name('index');
+
+                });
+
+            Route::get('/knowledge', [PageController::class, 'adminKnowledge'])
+                ->name('knowledge');
+
+            Route::get('/notifications', [PageController::class, 'adminNotifications'])
+                ->name('notifications');
+
+            Route::get('/profile', [PageController::class, 'adminProfile'])
+                ->name('profile');
+
+            Route::get('/settings', [PageController::class, 'adminSettings'])
+                ->name('settings');
+
+            Route::get('/history', [PageController::class, 'adminHistory'])
+                ->name('history');
+
+            Route::get('/staff', [PageController::class, 'staff'])
+                ->name('staff');
+
+            Route::get('/staff/staff_information', 
+                [StaffController::class, 'staffInformation'])
+            ->name('staff.staff_information');
+            Route::get('/staff/staff_archives',
+                [StaffController::class, 'staffArchives'])
+            ->name('staff.staff_archives');
+
+            Route::get('/barangays', [PageController::class, 'barangays'])
+                ->name('barangays');
+
+            Route::get('/departments', [PageController::class, 'departments'])
+                ->name('departments');
+
+            Route::get('/services', [PageController::class, 'services'])
+                ->name('services');
+
+            Route::get('/reports', [PageController::class, 'reports'])
+                ->name('reports');
+
+        });
+
+});
+
 
 /*
 |--------------------------------------------------------------------------
 | Logout
 |--------------------------------------------------------------------------
-|
-| Clears the logged_in flag so /login becomes accessible again.
-|
 */
 
-Route::get('/logout', function () {
-    session()->forget('logged_in');
+Route::get('/logout', [AuthController::class, 'logout'])
+    ->name('logout');
 
-    return redirect()->route('home');
-})->name('logout');
 
 /*
 |--------------------------------------------------------------------------
-| Fallback
+| 404 Fallback
 |--------------------------------------------------------------------------
 |
-| Any URL that doesn't match a route above renders the custom 404 page.
+| IMPORTANT:
+| This is OUTSIDE the authentication middleware.
+|
+| Therefore:
+|
+| Existing protected URL + not logged in = 401
+| Non-existing URL = 404
 |
 */
 
-Route::fallback(function () {
-    return response()->view('error.404', [], 404);
-});
+Route::fallback([PageController::class, 'notFound']);

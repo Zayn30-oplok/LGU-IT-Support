@@ -19,7 +19,7 @@
             class="flex items-center gap-2 sm:gap-3 justify-self-start self-center min-w-0 hover:opacity-85 transition-opacity"
         >
             @if($logo)
-                <img src="{{ $logo }}" alt="{{ $title }} logo" class="h-8 w-8 sm:h-10 sm:w-10 rounded-md object-cover shrink-0">
+                <img src="{{ $logo }}" alt="{{ $title }} logo" class="h-10 w-10 sm:h-12 sm:w-12 rounded-md object-cover shrink-0">
             @endif
 
             @if($title || $subtitle)
@@ -43,12 +43,12 @@
 
         <div class="flex items-center gap-2 justify-self-end self-center header-buttons" style="display: none;">
             <button type="button" class="header-btn header-btn-secondary">
-                <span>Submit Ticket</span>
-                <i class="ti ti-send-2"></i>
+                <span> Track Request </span>
+                <i class="ti ti-search"></i>
             </button>
             <a href="{{ route('login') }}" class="header-btn header-btn-primary">
-                <span>Login</span>
-                <i class="ti ti-shield-lock"></i>
+                <span> Login </span>
+                <i class="ti ti-login"></i>
             </a>
         </div>
     </div>

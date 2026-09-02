@@ -1,0 +1,205 @@
+@extends('layouts.app')
+
+@section('title', 'Staff Archives')
+
+@section('content')
+
+    <script src="{{ asset('assets/js/modal.js') }}"></script>
+    <script src="{{ asset('assets/js/staff.js') }}"></script>
+
+    <x-card>
+        <div class="flex w-full items-center inline-flew justify-between gap-4">
+
+            {{-- Return Button --}}
+            <x-button
+                color="outline-dark"
+                iconPosition="center"
+                icon="ti ti-arrow-narrow-left"
+                href="{{ route('admin.staff') }}"
+                class="w-fit text-xs"
+            >
+                Return
+            </x-button>
+
+            {{-- Note --}}
+            <x-card
+                color="red"
+                class="w-fit"
+            >
+                <div class="flex items-center justify-end gap-2">
+
+                    <span class="text-xs font-semibold whitespace-nowrap">
+                        *Note:
+                    </span>
+
+                    <span class="text-xs text-center">
+                        Archived Staff will be permanently deleted in 30 days after being archived.
+                    </span>
+
+                </div>
+            </x-card>
+
+        </div>
+
+        <div class="space-y-6 mt-6">
+            
+            
+            <div class="flex w-full flex-col gap-2 sm:flex-row sm:items-center lg:w-auto">
+                {{-- Search --}}
+                <x-input_white
+                    name="search"
+                    type="text"
+                    placeholder="Search by name or id"
+                    icon="ti ti-search"
+                    class="w-full h-8 sm:w-[20rem]"
+                />
+            
+                {{-- Search Button --}}
+                <x-button
+                    color="d-blue"
+                    type="button"
+                >
+                    Search
+                </x-button>
+            </div>
+
+            
+
+            <div class="border-t border-gray-200"></div>
+
+            
+
+            <x-table
+                :columns="[
+                    'ID',
+                    'Full Name',
+                    'Archived Date',
+                    'Remaining Days',
+                ]"
+                :actions="true"
+            >
+
+                <x-slot:body>
+
+                    <tr class="border-b border-gray-100 transition-colors hover:bg-gray-50">
+                        <td class="whitespace-nowrap px-4 py-3 text-gray-900">
+                            IT-00001
+                        </td>
+                        <td class="whitespace-nowrap px-4 py-3 text-gray-900">
+                            Galanida, Filemon Jr., L.
+                        </td>
+                        <td class="whitespace-nowrap px-4 py-3 text-gray-900">
+                            08/31/2026
+                        </td>
+                        <td class="whitespace-nowrap px-4 py-3 text-gray-900">
+                            30 xdays
+                        </td>
+                        
+                        <td class="px-4 py-3">
+                            <div class="flex items-center">
+
+                                <x-action_btn
+                                    icon="ti ti-archive-off"
+                                    color="green"
+                                    title="Unarchive Staff"
+                                    data-modal-open="unarchive-confirmation-modal"
+                                />
+                            </div>
+                        </td>
+                    </tr>
+
+
+                </x-slot:body>
+
+            </x-table>
+
+        </div>
+    </x-card>
+
+{{--- Archive Confirmation ---}}
+    <x-modal_form
+        id="unarchive-confirmation-modal"
+        title="Unarchive Staff"
+        icon="ti ti-archive-off"
+        class="max-w-sm"
+    >
+        <div class="w-fit mx-auto space-y-5">
+
+            {{-- Confirmation Message --}}
+            <p class="text-sm text-gray-600 text-center">
+                Are you sure you want to unarchive this staff?
+            </p>
+
+            {{-- Staff Information --}}
+            <x-card color="green" class="w-full">
+                
+                <div class="space-y-2">
+
+                    {{-- ID No. --}}
+                    <div class="grid grid-cols-[100px_1fr] gap-2 items-start">
+                        <span class="text-xs font-bold">
+                            ID No:
+                        </span>
+
+                        <span class="text-xs font-medium">
+                            STF-00001
+                        </span>
+                    </div>
+
+                    {{-- Full Name --}}
+                    <div class="grid grid-cols-[100px_1fr] gap-2 items-start">
+                        <span class="text-xs font-bold">
+                            Full Name:
+                        </span>
+
+                        <span class="text-xs font-medium">
+                            Galanida, Filemon Jr., Leornas
+                        </span>
+                    </div>
+
+                    {{-- Account Status --}}
+                    <div class="grid grid-cols-[100px_1fr] gap-2 items-start">
+                        <span class="text-xs font-bold">
+                            Account Status:
+                        </span>
+
+                        <span class="text-xs font-medium">
+                            De-activated
+                        </span>
+                    </div>
+
+                </div>
+
+            </x-card>
+
+            {{-- Buttons --}}
+            <div class="flex justify-center gap-2">
+
+                <x-button
+                    type="button"
+                    color="outline-gray"
+                    data-modal-close="archive-confirmation-modal"
+                >
+                   No, Cancel
+                </x-button>
+
+                <x-button
+                    type="button"
+                    color="outline-red"
+                    onclick="confirmUnarchivedStaff()"
+                >
+                    Yes, Archive
+                </x-button>
+
+            </div>
+
+        </div>
+    </x-modal_form>
+
+    
+    {{-- Loading Modal --}}
+    <x-loading_modal id="unarchive-staff-loading" text="Unarchiving staff..." />
+
+    {{-- Success Modal --}}
+    <x-success_modal id="unarchive-staff-success" text="Staff removed from archived successfully!" />
+@endsection

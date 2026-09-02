@@ -1,5 +1,6 @@
 @props([
     'icon' => null,
+    'label' => null,
     'color' => 'blue',
 ])
 
@@ -79,8 +80,10 @@
     ]) }}
 >
     @if ($icon)
-        <i class="{{ $icon }} text-sm"></i>
+        <i class="{{ $icon }} text-[0.7rem]"></i>
     @endif
 
-    {{ $slot }}
+    <span class="text-[0.7rem]">
+        {{ $label ?? $slot }}
+    </span>
 </span>

@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ asset('assets/css/landing.css') }}">
-    <title>FixDesk</title>
+    <link rel="icon" type="image/png" href="{{ asset('assets/images/biringan.png') }}">
+    <title>City of Biringan - IT Support</title>
 
     @vite([
         'resources/css/app.css', 
@@ -13,9 +14,9 @@
 </head>
 <body>
     <x-header
-        title="FixDesk"
-        subtitle="Internal IT Support Portal"
-        logo="{{ asset('assets/images/it.png') }}"
+        title="IT SUPPORT"
+        subtitle="City of Biringan"
+        logo="{{ asset('assets/images/biringan.png') }}"
         background="rgba(9, 22, 40, 0.3)"
         textColor="#ffffff"
     >
@@ -23,27 +24,26 @@
         <a href="#services" class="nav-link">Services</a>
         <a href="#features" class="nav-link">Features</a>
         <a href="#how-it-works" class="nav-link">How it works</a>
-        <a href="#track-ticket" class="nav-link">Track Ticket</a>
+        <a href="#" class="nav-link">Submit Request</a>
     </x-header>
 
     <main class="landing-page">
         
         <section id="home" class="hero-section">
-            <div class="hero-badge">INTERNAL IT SUPPORT PORTAL</div>
-            <h1>GET IT SUPPORT WITHOUT HASSLE</h1>
+            <div class="hero-badge">CITY OF BIRINGAN IT SUPPORT</div>
+            <h1>IT SUPPORT FOR CITY OFFICES AND BARANGAYS</h1>
             <p>
-                Report technical issues, track your support requests, and communicate with
-                the IT team all in one centralized portal.
+                Get reliable technical assistance for hardware, software, network and other IT-related concerns
             </p>
 
             <div class="cta-row">
-                <button type="button" class="cta-button secondary">
-                    Submit a ticket
-                    <i class="ti ti-send-2"></i>
+                <button type="button" class="cta-button">
+                    <span> Track Request</span>
+                    <i class="ti ti-search"></i>
                 </button>
-                <a href="{{ route('login') }}" class="cta-button">
-                    Login
-                    <i class="ti ti-shield-lock"></i>
+                <a href="{{ route('login') }}" class="cta-button secondary">
+                    <span> Login </span>
+                    <i class="ti ti-login"></i>
                 </a>
             </div>
 
@@ -63,6 +63,7 @@
                     <span>Organized Support History</span>
                 </span>
             </div>
+
         </section>
 
     </main>
@@ -101,6 +102,8 @@
                     <p>Resolve connectivity issues, network configuration, and ensure stable internet access.</p>
                 </div>
 
+                
+
             </div>
         </div>
     </section>
@@ -114,7 +117,7 @@
             <h2 class="feature-title text-center">Core Features</h2>
 
             <p class="text-center text-sm font-light opacity-75 leading-relaxed max-w-2xl mx-auto">
-                Give employees an easy way to request help while giving IT staff the tools
+                Give City of Biringan an easy way to request help while giving IT staff the tools
                 to manage every support issue efficiently.
             </p>
 
@@ -122,7 +125,7 @@
 
                 <x-feature_card
                     title="Easy Ticketing"
-                    description="Employees can report IT problems by providing
+                    description="Offices and Barangay can report IT problems by providing
                                 the issue, category, and supporting details."
                     icon="ti ti-ticket"
                 />
@@ -130,13 +133,13 @@
                 <x-feature_card
                     title="IT Support Management"
                     description="IT staff can review, assign, update, and
-                                resolve employee support tickets."
+                                resolve City and Barangay Offices support tickets."
                     icon="ti ti-headset"
                 />
 
                 <x-feature_card
                     title="Ticket Tracking"
-                    description="Employees can monitor their ticket status from
+                    description="Offices and Barangays can monitor their ticket status from
                                 Open → In progress → Resolved → Closed."
                     icon="ti ti-git-merge"
                 />
@@ -183,7 +186,7 @@
                     <i class="ti ti-analyze"></i>
                 </div>
                 <div class="timeline-content">
-                    <h3>IT Reviews Your Request</h3>
+                    <h3>IT Staff Reviews Your Request</h3>
                     <p class="font-bold text-white">Your request gets to the right people.</p>
                     <p class="text-xs">The IT support team reviews your ticket, checks the issue details, and assigns it for proper handling.</p>
                 </div>
@@ -217,41 +220,8 @@
 
     <div class="animated-divider"></div>
 
-    <section id="track-ticket" class="track-ticket-section">
-
-
-        <h2 class="track-title text-center font-light mx-auto">
-             Track Your Ticket
-        </h2>
-        <p class="text-center text-sm font-light opacity-75 leading-relaxed max-w-2xl mx-auto">
-            Check the latest status and updates of your ticket.
-        </p>
-
-        <div class="mt-10 flex w-full max-w-xl items-center justify-center">
-            <x-input
-                name="email"
-                type="text"
-                label="Enter ticket number"
-                placeholder="Enter ticket number"
-                leftIcon="ti ti-ticket"
-                backgroundColor="#071F45"
-                strokeColor="#475569"
-                focusColor="#00DDFF"
-                iconColor="#64748b"
-                class="flex-1"
-            />
-
-            <button type="button" class="track-btn">
-                <span>Track</span>
-                <i class="ti ti-search"></i>
-            </button>
-        </div>
-
-    </section>
-
-    <div class="animated-divider"></div>
     
-    <p class="text-center mx-auto font-sm p-5">© 2026 Help Desk — Internal IT Support. All Rights Reserved</p>
+    <p class="text-center mx-auto font-sm p-5">© 2026 City of Biringan — IT Support. All Rights Reserved</p>
 
     <script>
         const navLinks = document.querySelectorAll('.nav-link');
